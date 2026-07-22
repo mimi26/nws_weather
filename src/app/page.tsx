@@ -1,6 +1,11 @@
-import styles from "./page.module.css";
+import { getGridPointUrl } from '@/app/lib/data';
+import styles from '@/app/page.module.css';
+import { Suspense } from 'react';
+import WeatherGrid from '@/app/ui/weather-grid';
 
-export default function Home() {
+export default async function Page() {
+
+  const weatherDataUrl = await getGridPointUrl();
   return (
     <main className={styles.page}>
         <div id="forecast-grid" className={styles['forecast-grid']}>
@@ -21,6 +26,9 @@ export default function Home() {
                 <p className={`${styles['row-header']} ${styles.precip}`}>% Chance Rain</p>
                 <p className={`${styles['row-header']} ${styles.wind}`}>Wind</p>
             </div>
+            <Suspense fallback={<div>Loading...</div>}>
+              <WeatherGrid url={weatherDataUrl} />
+            </Suspense>
         </div>
     </main>
   );
