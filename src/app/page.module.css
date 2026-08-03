@@ -75,12 +75,12 @@
   background-color: #f3eaf9;
 }
 
-.odd {
-  background-color: #e9ccfc;
+.dark {
+  background-color: var(--column-dark);
 }
 
-.even {
-  background-color: #ecd6fc;
+.light {
+  background-color: var(--column-light);
 }
 
 

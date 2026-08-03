@@ -11,26 +11,44 @@ export default async function WeatherGrid({ url }: { url: string }) {
     }
   });
   
-  const propertiesArray = filteredArray.map(prop => ({[prop]: properties[prop]}))
-  const timeArray: PropertyDataPoint['validTime'][] = propertiesArray.find(
-    prop => prop['temperature'],
-  )?.temperature.values.map((prop: PropertyDataPoint) => prop.validTime);
-  
-    const nowIndex = timeArray.findIndex(time => {
-      return Date.parse(new Date(time.match(/.*(?=\/)/)?.[0] as string)) >= Date.parse(new Date());
+  const propertiesArray = filteredArray.map(prop => ({[prop]: properties[prop]}));
+
+  const timeArray = [...new Array(20)].map((_elem, index) => {
+    const timePlusIndex = new Date(new Date().setUTCMinutes(0, 0) + (index * 60 * 60 * 1000));
+    return timePlusIndex;
   });
+
+  const getPropertyByTimeAndProperty = (time: Date, property: WeatherProperty) => {
+    const propertyArray = propertiesArray.find(prop => prop[property])?.[property].values;
+
+    return propertyArray.find((dataPoint: PropertyDataPoint) => {
+ 
+
+      return new Date(dataPoint.validTime.match(/.*(?=\/)/)?.[0]).toString() === time.toString();
+    });
+  };
 
   return (
     <>
-      {timeArray.slice(nowIndex, 50).map((prop: PropertyDataPoint['validTime']) => {
-        const timePoint = prop as string;
-        const timeString = new Date(timePoint.match(/.*(?=\/)/)?.[0] as string).toLocaleTimeString();
+      {timeArray.map(time => {
+        const tempCelcius = getPropertyByTimeAndProperty(time, WeatherProperty.temperature)?.value;
+        const tempFToRender = tempCelcius ? `${(tempCelcius * 9 / 5) + 32} \u2109` : '';
+        const heatIndexCelcius = getPropertyByTimeAndProperty(time, WeatherProperty.heatIndex)?.value;
+        const heatIndexFtoRender = heatIndexCelcius ? `${(heatIndexCelcius * 9 / 5) + 32} \u2109` : '';
+        const cloudCover = getPropertyByTimeAndProperty(time, WeatherProperty.skyCover)?.value;
+        const cloudCoverToRender = cloudCover ? `${cloudCover} %` : '';
+        const probabilityRain = getPropertyByTimeAndProperty(time, WeatherProperty.probabilityOfPrecipitation)?.value;
+        const chanceRainToRender = probabilityRain ? `${probabilityRain} %` : '';
+        const windSpeed = getPropertyByTimeAndProperty(time, WeatherProperty.windSpeed)?.value;
+        const windSpeedToRender = windSpeed ? `${Math.round(windSpeed * 0.6213711922)} mph` : '';
         return (
-          <div key={prop} className={`${styles['row-item']}`}>
-            <p>{timeString}</p>
-            {filteredArray.map(prop => {
-              return <p key={prop}>{prop}</p>
-            })}
+          <div key={time.toLocaleTimeString()} className={`${styles['row-item']}`}>
+            <p className={styles.dark}>{time.toLocaleTimeString()}</p>
+            <p className={styles.light}>{tempFToRender}</p>
+            <p className={styles.dark}>{heatIndexFtoRender}</p>
+            <p className={styles.light}>{cloudCoverToRender}</p>
+            <p className={styles.dark}>{chanceRainToRender}</p>
+            <p className={styles.light}>{windSpeedToRender}</p>
           </div>
         )
       })}
