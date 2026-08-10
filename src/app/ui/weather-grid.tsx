@@ -1,56 +1,51 @@
 import { getRawForecast } from '@/app/lib/data';
-import styles from '@/app/page.module.css';
 import { PropertyDataPoint, WeatherProperty } from '@/app/lib/types';
+import DataPoint from './data-point';
+import styles from '@/app/page.module.css';
 
 export default async function WeatherGrid({ url }: { url: string }) {
   const { ...properties } = await getRawForecast(url);
 
-  const filteredArray = Object.keys(properties).filter(prop => {
-    if (Object.keys(WeatherProperty).includes(prop)) {
-      return prop;
-    }
-  });
-  
-  const propertiesArray = filteredArray.map(prop => ({[prop]: properties[prop]}));
+  const propertiesArray = Object.keys(WeatherProperty).map(
+    prop => ({ [prop]: properties[prop as keyof WeatherProperty] }),
+  );
 
   const timeArray = [...new Array(20)].map((_elem, index) => {
     const timePlusIndex = new Date(new Date().setUTCMinutes(0, 0) + (index * 60 * 60 * 1000));
     return timePlusIndex;
   });
 
-  const getPropertyByTimeAndProperty = (time: Date, property: WeatherProperty) => {
-    const propertyArray = propertiesArray.find(prop => prop[property])?.[property].values;
+  const getPropertyByTimeAndProperty = (time: Date, property) => {
 
-    return propertyArray.find((dataPoint: PropertyDataPoint) => {
- 
+    const propertyArray = Object.entries(property)[0][1]?.values;
 
-      return new Date(dataPoint.validTime.match(/.*(?=\/)/)?.[0]).toString() === time.toString();
+    return propertyArray?.find((dataPoint: PropertyDataPoint) => {
+      const timeMatch = dataPoint?.validTime?.match(/.*(?=\/)/);
+      return timeMatch ? Date.parse(timeMatch[0]) === Date.parse(time.toString()) : false;
     });
   };
 
   return (
     <>
       {timeArray.map(time => {
-        const tempCelcius = getPropertyByTimeAndProperty(time, WeatherProperty.temperature)?.value;
-        const tempFToRender = tempCelcius ? `${(tempCelcius * 9 / 5) + 32} \u2109` : '';
-        const heatIndexCelcius = getPropertyByTimeAndProperty(time, WeatherProperty.heatIndex)?.value;
-        const heatIndexFtoRender = heatIndexCelcius ? `${(heatIndexCelcius * 9 / 5) + 32} \u2109` : '';
-        const cloudCover = getPropertyByTimeAndProperty(time, WeatherProperty.skyCover)?.value;
-        const cloudCoverToRender = cloudCover ? `${cloudCover} %` : '';
-        const probabilityRain = getPropertyByTimeAndProperty(time, WeatherProperty.probabilityOfPrecipitation)?.value;
-        const chanceRainToRender = probabilityRain ? `${probabilityRain} %` : '';
-        const windSpeed = getPropertyByTimeAndProperty(time, WeatherProperty.windSpeed)?.value;
-        const windSpeedToRender = windSpeed ? `${Math.round(windSpeed * 0.6213711922)} mph` : '';
         return (
-          <div key={time.toLocaleTimeString()} className={`${styles['row-item']}`}>
+          <div key={time.toString()} className={`${styles['row-item']}`}>
             <p className={styles.dark}>{time.toLocaleTimeString()}</p>
-            <p className={styles.light}>{tempFToRender}</p>
-            <p className={styles.dark}>{heatIndexFtoRender}</p>
-            <p className={styles.light}>{cloudCoverToRender}</p>
-            <p className={styles.dark}>{chanceRainToRender}</p>
-            <p className={styles.light}>{windSpeedToRender}</p>
+            {propertiesArray.map((property, index) => {
+              const backgroundClassName = index % 2 === 0 ? styles.light : styles.dark;
+
+              const rawPropertyValue = getPropertyByTimeAndProperty(time, property)?.value;
+
+              return (
+                <DataPoint
+                  key={`${Object.keys(property)[0]}-${time}`}
+                  weatherProperty={Object.keys(property)[0]}
+                  rawPropertyValue={rawPropertyValue}
+                  backgroundClassName={backgroundClassName}
+                />
+            )})}
           </div>
-        )
+        );
       })}
     </>
   );

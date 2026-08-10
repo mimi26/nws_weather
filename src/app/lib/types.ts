@@ -12,7 +12,7 @@ export interface propertyValues {
 
 export interface PropertyDataPoint {
   validTime: string;
-  value: number,
+  value: number;
 };
 
 export type WeatherPropertyData = {
