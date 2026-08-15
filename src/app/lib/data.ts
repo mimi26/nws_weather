@@ -27,7 +27,7 @@ export const getRawForecast = async (
   shouldRefresh?: boolean,
 ): Promise<WeatherPropertyData | undefined> => {
   const cache: RequestInit | undefined = shouldRefresh ? { cache: 'no-store' } : undefined;
-  let weatherData;
+
   try {
     const response = await fetch(gridDataUrl, cache);
     if (!response.ok) {

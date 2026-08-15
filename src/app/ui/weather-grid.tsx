@@ -1,11 +1,8 @@
-import { getRawForecast } from "@/app/lib/data";
-import { PropertyDataPoint, WeatherProperty } from "@/app/lib/types";
-import DataPoint from "./data-point";
-import styles from "@/app/page.module.css";
+import { PropertyDataPoint, WeatherProperty } from '@/app/lib/types';
+import DataPoint from './data-point';
+import styles from '@/app/page.module.css';
 
-export default async function WeatherGrid({ url }: { url: string }) {
-  const { ...properties } = await getRawForecast(url);
-
+export default function WeatherGrid({ properties }) {
   const propertiesArray = Object.keys(WeatherProperty).map((prop) => ({
     [prop]: properties[prop as keyof WeatherProperty],
   }));
@@ -62,7 +59,7 @@ export default async function WeatherGrid({ url }: { url: string }) {
           [prop]: dataValues[prop],
         }));
         return (
-          <div key={timeKey} className={`${styles["row-item"]}`}>
+          <div key={timeKey} className={`${styles['row-item']}`}>
             <p className={styles.dark}>{timeKey}</p>
 
             {dataArray.map((property, index) => {
