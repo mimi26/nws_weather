@@ -23,6 +23,7 @@ export default async function WeatherGrid({
     const timePlusIndex = new Date(
       new Date().setUTCMinutes(0, 0) + index * 60 * 60 * 1000,
     );
+    console.log('***** ~ new Date():', new Date());
     const timeKey = timePlusIndex.toLocaleTimeString([], {
       timeStyle: 'short',
     });
