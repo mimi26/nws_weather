@@ -36,18 +36,12 @@ export default async function GridContainer({
     <div id="forecast-grid" className={styles['forecast-grid']}>
       <MinMax max={max?.value} min={min?.value} location={location} />
       <div className={`${styles['row-item']} ${styles['row-headers']}`}>
-        <p className={`${styles['row-header']} ${styles.time}`}>Time</p>
-        <p className={`${styles['row-header']} ${styles.temperature}`}>
-          Temperature
-        </p>
-        <p className={`${styles['row-header']} ${styles['real-feel']}`}>
-          Feels Like
-        </p>
-        <p className={`${styles['row-header']} ${styles.cloud}`}>Cloud Cover</p>
-        <p className={`${styles['row-header']} ${styles.precip}`}>
-          % Chance Rain
-        </p>
-        <p className={`${styles['row-header']} ${styles.wind}`}>Wind</p>
+        <p className={styles.time}>Time</p>
+        <p className={styles.temperature}>Temperature</p>
+        <p className={styles['real-feel']}>Feels Like</p>
+        <p className={styles.cloud}>Cloud Cover</p>
+        <p className={styles.precip}>% Chance Rain</p>
+        <p className={styles.wind}>Wind</p>
       </div>
       <Suspense fallback={<div>Loading...</div>}>
         <WeatherGrid properties={properties} />

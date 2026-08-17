@@ -21,7 +21,9 @@ export default function WeatherGrid({
     const timePlusIndex = new Date(
       new Date().setUTCMinutes(0, 0) + index * 60 * 60 * 1000,
     );
-    const timeKey = timePlusIndex.toLocaleTimeString();
+    const timeKey = timePlusIndex.toLocaleTimeString([], {
+      timeStyle: 'short',
+    });
     const propObj: GridWeatherValue = {};
     const timeObj: GridTimePoint = { [timeKey]: propObj };
     propertiesArray.forEach((property) => {
