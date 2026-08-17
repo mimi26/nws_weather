@@ -5,10 +5,14 @@ export default function MinMax({
   min,
   location,
 }: {
-  max: number;
-  min: number;
+  max: number | undefined;
+  min: number | undefined;
   location: string;
 }) {
+  if (!(max && min)) {
+    return null;
+  }
+
   const high = `${(max * 9) / 5 + 32} \u2109`;
   const low = `${(min * 9) / 5 + 32} \u2109`;
 

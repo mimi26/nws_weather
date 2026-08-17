@@ -45,7 +45,6 @@ export const getRawForecast = async (
 export async function getLocationFromHeaders() {
   const headersList = await headers();
   const userAgent = headersList.get('x-forwarded-for');
-  console.log('***** process.env.development:', process.env.NODE_ENV)
   const isDev = process.env.NODE_ENV === 'development';
   const ip = isDev ? '69.118.228.20' : userAgent;
   const data = await fetch(`http://ip-api.com/json/${ip}`);

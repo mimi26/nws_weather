@@ -13,22 +13,28 @@ export default async function GridContainer({
 }) {
   const { ...properties } = await getRawForecast(url);
 
+  const currentTimeMatch = new Date().toISOString().match(/^(.*?)(?=T)/);
   const min = properties?.minTemperature.values.find((minTemp) => {
-    return (
-      new Date().toISOString().match(/^(.*?)(?=T)/)[0] ===
-      minTemp.validTime.match(/^(.*?)(?=T)/)[0]
-    );
+    const minTempTimeMatch = minTemp.validTime.match(/^(.*?)(?=T)/);
+    if (currentTimeMatch && minTempTimeMatch) {
+      return currentTimeMatch[0] === minTempTimeMatch[0];
+    } else {
+      return false;
+    }
   });
 
   const max = properties?.maxTemperature.values.find((maxTemp) => {
-    return (
-      new Date().toISOString().match(/^(.*?)(?=T)/)[0] ===
-      maxTemp.validTime.match(/^(.*?)(?=T)/)[0]
-    );
+    const maxTempMatch = maxTemp.validTime.match(/^(.*?)(?=T)/);
+    if (currentTimeMatch && maxTempMatch) {
+      return currentTimeMatch[0] === maxTempMatch[0];
+    } else {
+      return false;
+    }
   });
+
   return (
     <div id="forecast-grid" className={styles['forecast-grid']}>
-      <MinMax max={max.value} min={min.value} location={location} />
+      <MinMax max={max?.value} min={min?.value} location={location} />
       <div className={`${styles['row-item']} ${styles['row-headers']}`}>
         <p className={`${styles['row-header']} ${styles.time}`}>Time</p>
         <p className={`${styles['row-header']} ${styles.temperature}`}>

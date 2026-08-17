@@ -1,19 +1,29 @@
-import { PropertyDataPoint, WeatherProperty } from '@/app/lib/types';
-import DataPoint from './data-point';
+import {
+  GridTimePoint,
+  GridWeatherValue,
+  PropertyDataPoint,
+  WeatherProperty,
+  WeatherPropertyData,
+} from '@/app/lib/types';
+import DataPoint from '@/app/ui/data-point';
 import styles from '@/app/page.module.css';
 
-export default function WeatherGrid({ properties }) {
+export default function WeatherGrid({
+  properties,
+}: {
+  properties: WeatherPropertyData;
+}) {
   const propertiesArray = Object.keys(WeatherProperty).map((prop) => ({
-    [prop]: properties[prop as keyof WeatherProperty],
+    [prop]: properties[prop as WeatherProperty],
   }));
 
-  const gridData = [...new Array(20)].map((elem, index, arr) => {
+  const gridData: GridTimePoint[] = [...new Array(20)].map((_elem, index) => {
     const timePlusIndex = new Date(
       new Date().setUTCMinutes(0, 0) + index * 60 * 60 * 1000,
     );
-    const timeObj = {};
-    const propObj = {};
-    Object.assign(timeObj, { [timePlusIndex.toLocaleTimeString()]: propObj });
+    const timeKey = timePlusIndex.toLocaleTimeString();
+    const propObj: GridWeatherValue = {};
+    const timeObj: GridTimePoint = { [timeKey]: propObj };
     propertiesArray.forEach((property) => {
       const [propertyValues] = Object.values(property);
       const propertyArray = propertyValues?.values;
@@ -21,8 +31,11 @@ export default function WeatherGrid({ properties }) {
 
       const target = Date.parse(timePlusIndex.toString());
 
-      const propValue = propertyArray?.reduceRight(
-        (found: PropertyDataPoint, dataPoint: PropertyDataPoint) => {
+      const propValue: number | undefined = propertyArray?.reduceRight(
+        (
+          found: number | undefined,
+          dataPoint: PropertyDataPoint | undefined,
+        ): number | undefined => {
           if (found !== undefined) {
             return found;
           }
@@ -51,11 +64,13 @@ export default function WeatherGrid({ properties }) {
 
   return (
     <>
-      {gridData.map((timeData, index) => {
+      {gridData.map((timeData) => {
         const [timeKey] = Object.keys(timeData);
         const [dataValues] = Object.values(timeData);
 
-        const dataArray = Object.keys(WeatherProperty).map((prop) => ({
+        const dataArray = (
+          Object.keys(WeatherProperty) as WeatherProperty[]
+        ).map((prop) => ({
           [prop]: dataValues[prop],
         }));
         return (

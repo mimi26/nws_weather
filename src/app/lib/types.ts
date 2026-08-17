@@ -6,6 +6,13 @@ export enum WeatherProperty {
   windSpeed = 'windSpeed',
 }
 
+export enum DailyMinMax {
+  minTemperature = 'minTemperature',
+  maxTemperature = 'maxTemperature',
+}
+
+export type WeatherProperties = WeatherProperty | DailyMinMax;
+
 export interface propertyValues {
   values: PropertyDataPoint[];
 };
@@ -16,5 +23,9 @@ export interface PropertyDataPoint {
 };
 
 export type WeatherPropertyData = {
-  [Property in keyof WeatherProperty]: propertyValues;
+  [Property in WeatherProperties]: propertyValues;
 };
+
+export type GridWeatherValue = Partial<Record<WeatherProperties, number>>;
+
+export type GridTimePoint = Record<string, GridWeatherValue>;

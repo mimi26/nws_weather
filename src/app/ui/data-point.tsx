@@ -1,23 +1,25 @@
-import { WeatherProperty } from '../lib/types';
+import { WeatherProperty } from '@/app/lib/types';
 
 export default function DataPoint({
   weatherProperty,
   rawPropertyValue,
   backgroundClassName,
- }: {
-  weatherProperty: string,
-  rawPropertyValue?: number,
-  backgroundClassName: string,
- }) {
-
-  const formatValue = (rawPropertyValue: number | undefined, property: string) => {
+}: {
+  weatherProperty: string;
+  rawPropertyValue?: number;
+  backgroundClassName: string;
+}) {
+  const formatValue = (
+    rawPropertyValue: number | undefined,
+    property: string,
+  ) => {
     if (!rawPropertyValue?.toString()) {
       return '';
     }
     switch (property) {
       case WeatherProperty.temperature:
       case WeatherProperty.heatIndex:
-        return `${(rawPropertyValue * 9 / 5) + 32} \u2109`;
+        return `${(rawPropertyValue * 9) / 5 + 32} \u2109`;
       case WeatherProperty.skyCover:
       case WeatherProperty.probabilityOfPrecipitation:
         return `${rawPropertyValue.toString()} %`;
@@ -26,7 +28,7 @@ export default function DataPoint({
       default:
         break;
     }
-  }
+  };
 
   return (
     <p className={backgroundClassName}>
