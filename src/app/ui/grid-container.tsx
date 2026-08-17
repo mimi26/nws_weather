@@ -12,7 +12,6 @@ export default async function GridContainer({
   url: string;
   location: string;
 }) {
-  await connection(); // Allow Date.now to be dynamic.
   const { ...properties } = await getRawForecast(url);
 
   const currentTimeMatch = new Date().toISOString().match(/^(.*?)(?=T)/);
