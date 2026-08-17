@@ -3,6 +3,7 @@ import styles from '@/app/page.module.css';
 import { Suspense } from 'react';
 import WeatherGrid from '@/app/ui/weather-grid';
 import MinMax from '@/app/ui/min-max';
+import { connection } from 'next/server';
 
 export default async function GridContainer({
   url,
@@ -11,6 +12,7 @@ export default async function GridContainer({
   url: string;
   location: string;
 }) {
+  await connection(); // Allow Date.now to be dynamic.
   const { ...properties } = await getRawForecast(url);
 
   const currentTimeMatch = new Date().toISOString().match(/^(.*?)(?=T)/);
