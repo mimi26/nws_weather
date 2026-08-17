@@ -4,7 +4,13 @@ import { Suspense } from 'react';
 import WeatherGrid from '@/app/ui/weather-grid';
 import MinMax from '@/app/ui/min-max';
 
-export default async function GridContainer({ url }: { url: string }) {
+export default async function GridContainer({
+  url,
+  location,
+}: {
+  url: string;
+  location: string;
+}) {
   const { ...properties } = await getRawForecast(url);
 
   const min = properties?.minTemperature.values.find((minTemp) => {
@@ -22,7 +28,7 @@ export default async function GridContainer({ url }: { url: string }) {
   });
   return (
     <div id="forecast-grid" className={styles['forecast-grid']}>
-      <MinMax max={max.value} min={min.value} />
+      <MinMax max={max.value} min={min.value} location={location} />
       <div className={`${styles['row-item']} ${styles['row-headers']}`}>
         <p className={`${styles['row-header']} ${styles.time}`}>Time</p>
         <p className={`${styles['row-header']} ${styles.temperature}`}>

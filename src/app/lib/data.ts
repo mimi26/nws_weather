@@ -1,4 +1,5 @@
 import { WeatherPropertyData } from "@/app/lib/types";
+import { headers } from 'next/headers';
 
 export const getGridPointUrl = async (
   lat = '40.64199314201601',
@@ -40,3 +41,15 @@ export const getRawForecast = async (
     console.error(e.message);
   }
 };
+
+export async function getLocationFromHeaders() {
+  const headersList = await headers();
+  const userAgent = headersList.get('x-forwarded-for');
+  console.log('***** process.env.development:', process.env.NODE_ENV)
+  const isDev = process.env.NODE_ENV === 'development';
+  const ip = isDev ? '69.118.228.20' : userAgent;
+  const data = await fetch(`http://ip-api.com/json/${ip}`);
+  const { lat, lon, city, region } = await data.json();
+  const location = `${city}, ${region}`;
+  return { lat, lon, location };
+}
