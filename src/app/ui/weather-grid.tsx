@@ -1,3 +1,4 @@
+'use client';
 import {
   GridTimePoint,
   GridWeatherValue,
@@ -7,23 +8,29 @@ import {
 } from '@/app/lib/types';
 import DataPoint from '@/app/ui/data-point';
 import styles from '@/app/page.module.css';
-import { connection } from 'next/server';
+import { useEffect, useState } from 'react';
 
-export default async function WeatherGrid({
+export default function WeatherGrid({
   properties,
 }: {
   properties: WeatherPropertyData;
 }) {
-  await connection(); // Allow Date.now to be dynamic.
+  const [time, setTime] = useState<Date>(new Date());
+
+  useEffect(() => {
+    setTime(new Date());
+    const interval = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   const propertiesArray = Object.keys(WeatherProperty).map((prop) => ({
     [prop]: properties[prop as WeatherProperty],
   }));
 
   const gridData: GridTimePoint[] = [...new Array(20)].map((_elem, index) => {
     const timePlusIndex = new Date(
-      new Date().setUTCMinutes(0, 0) + index * 60 * 60 * 1000,
+      time.setUTCMinutes(0, 0) + index * 60 * 60 * 1000,
     );
-    console.log('***** ~ new Date():', new Date());
     const timeKey = timePlusIndex.toLocaleTimeString([], {
       timeStyle: 'short',
     });

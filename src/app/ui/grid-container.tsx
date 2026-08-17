@@ -3,7 +3,6 @@ import styles from '@/app/page.module.css';
 import { Suspense } from 'react';
 import WeatherGrid from '@/app/ui/weather-grid';
 import MinMax from '@/app/ui/min-max';
-import { connection } from 'next/server';
 
 export default async function GridContainer({
   url,
