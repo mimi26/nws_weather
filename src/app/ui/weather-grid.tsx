@@ -8,20 +8,14 @@ import {
 } from '@/app/lib/types';
 import DataPoint from '@/app/ui/data-point';
 import styles from '@/app/page.module.css';
-import { useEffect, useState } from 'react';
+import { useTime } from '@/app/hooks/useTime';
 
 export default function WeatherGrid({
   properties,
 }: {
   properties: WeatherPropertyData;
 }) {
-  const [time, setTime] = useState<Date>(new Date());
-
-  useEffect(() => {
-    setTime(new Date());
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+  const time = useTime();
 
   const propertiesArray = Object.keys(WeatherProperty).map((prop) => ({
     [prop]: properties[prop as WeatherProperty],

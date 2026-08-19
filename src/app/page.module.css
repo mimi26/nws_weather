@@ -50,10 +50,15 @@
   padding-left: 10px;
 }
 
-.location {
+.time-container {
+  display: flex;
   padding-left: 10px;
   padding-top: 10px;
   font-size: 17px;
+}
+
+.location {
+  margin-right: 20px;
 }
 
 .row-item p {
