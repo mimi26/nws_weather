@@ -37,6 +37,18 @@
   font-size: 25px;
 }
 
+.form-container {
+  display: flex;
+}
+
+.margin-element {
+  margin: 5px;
+}
+
+.padding-element {
+  padding: 5px;
+}
+
 .refresh-btn {
   width: max-content;
   margin-right: 20%;

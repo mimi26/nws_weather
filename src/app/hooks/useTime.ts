@@ -11,7 +11,7 @@ export function useTime() {
     onTimeUpdate();
     const interval = setInterval(() => {
       onTimeUpdate();
-    }, 1000);
+    }, 1800000);
     return () => clearInterval(interval);
   }, []);
 

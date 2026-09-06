@@ -1,6 +1,30 @@
 import { WeatherPropertyData } from "@/app/lib/types";
 import { headers } from 'next/headers';
 
+export const geocodeLocation = async (formLocation: string) => {
+  const encodedLocation = encodeURIComponent(formLocation)
+
+  const url = `https://photon.komoot.io/api/?q=${encodedLocation}&limit=5`;
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+    const geocodeResp = await response.json();
+    const state = geocodeResp?.features?.[0]?.properties?.state;
+    const district = geocodeResp?.features?.[0]?.properties?.district ?? geocodeResp?.features?.[0]?.properties?.city;
+    const location = `${district}, ${state}`;
+
+    const [long, lat] = geocodeResp?.features?.[0]?.geometry?.coordinates;
+
+    return { long, lat, location };
+
+  } catch (error: any) {
+    console.error(error.message);
+  }
+}
+
 export const getGridPointUrl = async (
   lat = '40.64199314201601',
   long = '-73.97214963678621',
