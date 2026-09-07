@@ -4,7 +4,7 @@ import { headers } from 'next/headers';
 export const geocodeLocation = async (formLocation: string) => {
   const encodedLocation = encodeURIComponent(formLocation)
 
-  const url = `https://photon.komoot.io/api/?q=${encodedLocation}&limit=5`;
+  const url = `https://photon.komoot.io/api/?q=${encodedLocation}&limit=1`;
   try {
     const response = await fetch(url);
 

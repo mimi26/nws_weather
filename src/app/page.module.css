@@ -49,6 +49,10 @@
   padding: 5px;
 }
 
+.address-input {
+  width: 200px;
+}
+
 .refresh-btn {
   width: max-content;
   margin-right: 20%;

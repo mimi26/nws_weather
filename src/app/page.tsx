@@ -18,8 +18,6 @@ export default async function Page({
     lat = resp?.lat;
     lon = resp?.long;
     location = resp?.location;
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('', '');
   } else {
     const response = await getLocationFromHeaders();
 
