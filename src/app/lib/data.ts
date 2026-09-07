@@ -13,8 +13,12 @@ export const geocodeLocation = async (formLocation: string) => {
     }
     const geocodeResp = await response.json();
     const state = geocodeResp?.features?.[0]?.properties?.state;
-    const district = geocodeResp?.features?.[0]?.properties?.district ?? geocodeResp?.features?.[0]?.properties?.city;
-    const location = `${district}, ${state}`;
+    const city = geocodeResp?.features?.[0]?.properties?.district
+      ?? geocodeResp?.features?.[0]?.properties?.city
+      ?? geocodeResp?.features?.[0]?.properties?.name
+      ?? geocodeResp?.features?.[0]?.properties?.county
+      ?? '';
+    const location = `${city}, ${state}`;
 
     const [long, lat] = geocodeResp?.features?.[0]?.geometry?.coordinates;
 
