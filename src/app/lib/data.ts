@@ -4,7 +4,7 @@ import { headers } from 'next/headers';
 export const geocodeLocation = async (formLocation: string) => {
   const encodedLocation = encodeURIComponent(formLocation)
 
-  const url = `https://photon.komoot.io/api/?q=${encodedLocation}&limit=5`;
+  const url = `https://photon.komoot.io/api/?q=${encodedLocation}&limit=1`;
   try {
     const response = await fetch(url);
 
@@ -13,8 +13,12 @@ export const geocodeLocation = async (formLocation: string) => {
     }
     const geocodeResp = await response.json();
     const state = geocodeResp?.features?.[0]?.properties?.state;
-    const district = geocodeResp?.features?.[0]?.properties?.district ?? geocodeResp?.features?.[0]?.properties?.city;
-    const location = `${district}, ${state}`;
+    const city = geocodeResp?.features?.[0]?.properties?.district
+      ?? geocodeResp?.features?.[0]?.properties?.city
+      ?? geocodeResp?.features?.[0]?.properties?.name
+      ?? geocodeResp?.features?.[0]?.properties?.county
+      ?? '';
+    const location = `${city}, ${state}`;
 
     const [long, lat] = geocodeResp?.features?.[0]?.geometry?.coordinates;
 
