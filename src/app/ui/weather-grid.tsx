@@ -6,9 +6,10 @@ import {
   WeatherProperty,
   WeatherPropertyData,
 } from '@/app/lib/types';
+import { useTime } from '@/app/hooks/useTime';
 import DataPoint from '@/app/ui/data-point';
 import styles from '@/app/page.module.css';
-import { useTime } from '@/app/hooks/useTime';
+import weatherStyles from '@/app/styles/weather-grid.module.css';
 
 export default function WeatherGrid({
   properties,
@@ -81,11 +82,11 @@ export default function WeatherGrid({
         }));
         return (
           <div key={timeKey} className={`${styles['row-item']}`}>
-            <p className={styles.dark}>{timeKey}</p>
+            <p className={weatherStyles.dark}>{timeKey}</p>
 
             {dataArray.map((property, index) => {
               const backgroundClassName =
-                index % 2 === 0 ? styles.light : styles.dark;
+                index % 2 === 0 ? weatherStyles.light : weatherStyles.dark;
               const [propKey] = Object.keys(property);
               return (
                 <DataPoint

@@ -1,5 +1,5 @@
 'use client';
-import styles from '@/app/page.module.css';
+import styles from '@/app/styles/grid-container.module.css';
 import { ReactNode } from 'react';
 
 export default function GridContainer({ children }: { children: ReactNode }) {

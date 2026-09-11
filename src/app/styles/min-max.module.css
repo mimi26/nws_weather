@@ -1,0 +1,38 @@
+.grid-header {
+  display: flex;
+  flex-direction: column;
+  grid-row: auto / span 3;
+  background-color: #e6c1ff;
+  padding-bottom: 16px;
+}
+
+.time-container {
+  display: flex;
+  padding-left: 10px;
+  padding-top: 10px;
+  font-size: 17px;
+}
+
+.location {
+  margin-right: 20px;
+}
+
+.max-min {
+  display: flex;
+  margin-left: 8%;
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  font-size: 25px;
+}
+
+.daily-max,
+.daily-min {
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.form-container {
+  display: flex;
+}

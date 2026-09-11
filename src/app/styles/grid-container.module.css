@@ -1,0 +1,11 @@
+.forecast-grid {
+  display: grid;
+  grid-auto-rows: minmax(4%, auto);
+}
+
+@media (min-width: 600px) {
+  .forecast-grid {
+    width: 80%;
+    margin: 0 auto;
+  }
+}

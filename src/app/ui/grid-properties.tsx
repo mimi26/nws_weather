@@ -1,8 +1,9 @@
 import { Suspense } from 'react';
-import WeatherGrid from './weather-grid';
+import { getRawForecast } from '@/app/lib/data';
+import WeatherGrid from '@/app/ui/weather-grid';
 import MinMax from '@/app/ui/min-max';
 import styles from '@/app/page.module.css';
-import { getRawForecast } from '@/app/lib/data';
+import gridPropStyles from '@/app/styles/grid-properties.module.css';
 
 export default async function GridProperties({
   url,
@@ -35,16 +36,14 @@ export default async function GridProperties({
 
   return (
     <>
-      <div>
-        <MinMax max={max?.value} min={min?.value} location={location} />
-      </div>
-      <div className={`${styles['row-item']} ${styles['row-headers']}`}>
-        <p className={styles.time}>Time</p>
-        <p className={styles.temperature}>Temperature</p>
-        <p className={styles['real-feel']}>Feels Like</p>
-        <p className={styles.cloud}>Cloud Cover</p>
-        <p className={styles.precip}>% Chance Rain</p>
-        <p className={styles.wind}>Wind</p>
+      <MinMax max={max?.value} min={min?.value} location={location} />
+      <div className={styles['row-item']}>
+        <p className={gridPropStyles.time}>Time</p>
+        <p className={gridPropStyles.temperature}>Temperature</p>
+        <p className={gridPropStyles['real-feel']}>Feels Like</p>
+        <p className={gridPropStyles.cloud}>Cloud Cover</p>
+        <p className={gridPropStyles.precip}>% Chance Rain</p>
+        <p className={gridPropStyles.wind}>Wind</p>
       </div>
       <Suspense fallback={<div>Loading...</div>}>
         <WeatherGrid properties={properties} />
