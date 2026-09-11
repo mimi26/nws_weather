@@ -1,9 +1,10 @@
 'use client';
 
+import { SubmitEvent } from 'react';
 import Form from 'next/form';
 import { useRouter } from 'next/navigation';
 import styles from '@/app/page.module.css';
-import { SubmitEvent } from 'react';
+import formStyles from '@/app/styles/location-form.module.css';
 
 export default function LocationForm() {
   const router = useRouter();
@@ -32,7 +33,7 @@ export default function LocationForm() {
       <input
         type="text"
         name="location"
-        className={`${styles['padding-element']} ${styles['address-input']}`}
+        className={`${styles['padding-element']} ${formStyles['address-input']}`}
         placeholder="Address, Zip, City, State"
       />
       <button type="submit" className={styles['padding-element']}>

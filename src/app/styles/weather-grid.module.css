@@ -1,0 +1,7 @@
+.dark {
+  background-color: var(--column-dark);
+}
+
+.light {
+  background-color: var(--column-light);
+}

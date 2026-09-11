@@ -1,0 +1,11 @@
+.time,
+.real-feel,
+.precip {
+  background-color: var(--header-dark);
+}
+
+.temperature,
+.cloud,
+.wind {
+  background-color: var(--header-light);
+}

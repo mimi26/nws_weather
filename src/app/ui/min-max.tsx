@@ -1,8 +1,9 @@
 'use client';
-import styles from '@/app/page.module.css';
-import { useTime } from '@/app/hooks/useTime';
-import LocationForm from './location-form';
 import { useRouter } from 'next/navigation';
+import { useTime } from '@/app/hooks/useTime';
+import LocationForm from '@/app/ui/location-form';
+import styles from '@/app/page.module.css';
+import minMaxStyles from '@/app/styles/min-max.module.css';
 
 export default function MinMax({
   max,
@@ -24,18 +25,18 @@ export default function MinMax({
   const low = `${(min * 9) / 5 + 32} \u2109`;
 
   return (
-    <div className={styles['grid-header']}>
-      <div className={styles['time-container']}>
-        <span className={styles.location}>Weather for {location}:</span>
-        <time className={styles.location}>
+    <div className={minMaxStyles['grid-header']}>
+      <div className={minMaxStyles['time-container']}>
+        <span className={minMaxStyles.location}>Weather for {location}:</span>
+        <time className={minMaxStyles.location}>
           {time.toLocaleDateString([], { dateStyle: 'full' })}
         </time>
       </div>
-      <div className={styles['max-min']}>
-        <span className={styles['daily-max']}>Today's High: {high}</span>
-        <span className={styles['daily-min']}>Today's Low: {low}</span>
+      <div className={minMaxStyles['max-min']}>
+        <span className={minMaxStyles['daily-max']}>Today's High: {high}</span>
+        <span className={minMaxStyles['daily-min']}>Today's Low: {low}</span>
       </div>
-      <div className={styles['form-container']}>
+      <div className={minMaxStyles['form-container']}>
         <LocationForm />
         <button
           onClick={() => {
